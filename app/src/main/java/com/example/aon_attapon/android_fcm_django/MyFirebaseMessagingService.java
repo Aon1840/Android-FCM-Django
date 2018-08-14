@@ -11,14 +11,23 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    int idDataPayload=0, idNotiPayload=0;
+    int idDataPayload=createId(), idNotiPayload=createId();
     private final String CH1 = "CH1";
 
     public MyFirebaseMessagingService(){
 
+    }
+
+    public int createId(){
+        Date now = new Date();
+        int id = Integer.parseInt(new java.text.SimpleDateFormat("ddHHmmss", Locale.US).format(now));
+
+        return id;
     }
 
     @Override
@@ -65,7 +74,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .setContentText(s);
 
                     NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    nm.notify(idDataPayload+1, b.build());
+                    nm.notify(idDataPayload, b.build());
                 }
             }
         }
@@ -82,7 +91,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                             .setContentText(sn);
 
                     NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    nm.notify(idNotiPayload++, b.build());
+                    nm.notify(idNotiPayload, b.build());
 
         }
     }
